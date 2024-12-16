@@ -25,7 +25,8 @@ Build confirmed on:
 * Linux version `5.19` on Ubuntu 22.4
 * Linux version `6.1.0-9-amd64` on Debian Bookworm
 * Linux version `6.1.*` to `6.12.*` (self-compiled) on Debian and Ubuntu 22.04
-* Linux version `6.10.3` to `6.11.10` on Debian Trixie
+* Linux version `6.10.3` to `6.12.10` on Debian Trixie
+* Linux version `6.13.0` (self-compiled) on Debian Trixie
 
 ## Using and Installing the Driver
 
