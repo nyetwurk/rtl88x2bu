@@ -92,9 +92,10 @@ function deploy_driver() {
 
 function list-kernels() {
     if [[ -n "${TARGET_KERNEL}" ]]; then
+        echo "${TARGET_KERNEL}"
+    else
         find /boot -maxdepth 1 -iname "initrd.img*" |
             cut -d- -f2
-    else
         echo "${TARGET_KERNEL}"
     fi
 }
