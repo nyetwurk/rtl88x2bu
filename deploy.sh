@@ -7,7 +7,7 @@ function main() {
     VERSION="$(get_version)"
     ensure_no_cli_args "$@"
     ensure_root_permissions
-    remove_driver &>/dev/null || true
+    remove_driver
     put_sources_in_place "$VERSION"
     deploy_driver "$VERSION"
 }
@@ -26,12 +26,12 @@ function ensure_root_permissions() {
     fi
 }
 
-function get_version() {
-    sed -En 's/PACKAGE_VERSION="(.*)"/\1/p' dkms.conf
+function remove_driver() {
+    sudo dkms remove rtl88x2bu/5.8.7.1 --all &>/dev/null || true
 }
 
-function remove_driver() {
-    sudo dkms remove rtl88x2bu/5.8.7.1 --all
+function get_version() {
+    sed -En 's/PACKAGE_VERSION="(.*)"/\1/p' dkms.conf
 }
 
 function put_sources_in_place() {
