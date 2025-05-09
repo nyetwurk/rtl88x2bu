@@ -2,10 +2,12 @@
 
 set -euo pipefail
 
+TARGET_KERNEL=
+
 function main() {
     local VERSION
     VERSION="$(get_version)"
-    ensure_no_cli_args "$@"
+    parse-cli-args "$@"
     ensure_root_permissions
     remove_driver
     put_sources_in_place "$VERSION"
@@ -16,11 +18,37 @@ function get_version() {
     sed -En 's/PACKAGE_VERSION="(.*)"/\1/p' dkms.conf
 }
 
-function ensure_no_cli_args() {
-    if [ $# -ne 0 ]; then
-        echo "No command line arguments accepted!" >&2
-        exit 1
-    fi
+function parse-cli-args() {
+    while $#; do
+        case "$1" in
+            -h | --help)
+                print-usage >&2
+                exit 1
+                ;;
+            *)
+                TARGET_KERNEL="$1"
+                shift
+                ;;
+        esac
+    done
+}
+
+function print-usage() {
+    cat <<EOF
+Usage: $0 [TARGET_KERNEL]
+
+Deploy the rtl88x2bu driver to the system. If TARGET_KERNEL is not specified,
+the driver will be deployed to all available kernels.
+
+Options:
+  -h, --help        Show this help message and exit
+  TARGET_KERNEL     Specify the target kernel version to deploy the driver to.
+                    If not specified, the script will deploy to all available
+                    kernels.
+                    Example: $0 5.4.0-42-generic
+
+This script will ask for root permissions to deploy the driver.
+EOF
 }
 
 function ensure_root_permissions() {
@@ -41,7 +69,7 @@ function put_sources_in_place() {
 
 function deploy_driver() {
     local VERSION="$1"
-    sudo dkms "add" -m rtl88x2bu -v "${VERSION}"
+    sudo dkms "add" -m rtl88x2bu -v "${VERSION}" || true
     list-kernels |
         while read -r kernel; do
             # xargs -n1 sudo dkms install -m rtl88x2bu -v 5.8.7.1 -k
@@ -53,8 +81,12 @@ function deploy_driver() {
 }
 
 function list-kernels() {
-    find /boot -maxdepth 1 -iname "initrd.img*" |
-        cut -d- -f2
+    if [[ -n "${TARGET_KERNEL}" ]]; then
+        find /boot -maxdepth 1 -iname "initrd.img*" |
+            cut -d- -f2
+    else
+        echo "${TARGET_KERNEL}"
+    fi
 }
 
 main "$@"
