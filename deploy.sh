@@ -54,7 +54,12 @@ Options:
   TARGET_KERNEL     Specify the target kernel version to deploy the driver to.
                     If not specified, the script will deploy to all available
                     kernels.
-                    Example: $0 5.4.0-42-generic
+
+Examples:
+
+$0
+$0 -v \$(uname -r)
+$0 6.12.17-amd64
 
 This script will ask for root permissions to deploy the driver.
 EOF
