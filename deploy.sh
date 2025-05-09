@@ -42,8 +42,7 @@ function put_sources_in_place() {
 function deploy_driver() {
     local VERSION="$1"
     sudo dkms "add" -m rtl88x2bu -v "${VERSION}"
-    find /boot -maxdepth 1 -iname "initrd.img*" |
-        cut -d- -f2- |
+    list-kernels |
         while read -r kernel; do
             # xargs -n1 sudo dkms install -m rtl88x2bu -v 5.8.7.1 -k
             for action in build install; do
@@ -51,6 +50,11 @@ function deploy_driver() {
             done
         done
     sudo modprobe 88x2bu
+}
+
+function list-kernels() {
+    find /boot -maxdepth 1 -iname "initrd.img*" |
+        cut -d- -f2
 }
 
 main "$@"
