@@ -12,6 +12,10 @@ function main() {
     deploy_driver "$VERSION"
 }
 
+function get_version() {
+    sed -En 's/PACKAGE_VERSION="(.*)"/\1/p' dkms.conf
+}
+
 function ensure_no_cli_args() {
     if [ $# -ne 0 ]; then
         echo "No command line arguments accepted!" >&2
@@ -28,10 +32,6 @@ function ensure_root_permissions() {
 
 function remove_driver() {
     sudo dkms remove rtl88x2bu/5.8.7.1 --all &>/dev/null || true
-}
-
-function get_version() {
-    sed -En 's/PACKAGE_VERSION="(.*)"/\1/p' dkms.conf
 }
 
 function put_sources_in_place() {
