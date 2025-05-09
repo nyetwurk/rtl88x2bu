@@ -3,6 +3,7 @@
 set -euo pipefail
 
 TARGET_KERNEL=
+VERBOSE=false
 
 function main() {
     local VERSION
@@ -19,13 +20,21 @@ function get_version() {
 }
 
 function parse-cli-args() {
-    while $#; do
+    while [[ $# -gt 0 ]]; do
         case "$1" in
+            -v | --verbose)
+                VERBOSE=true
+                shift
+                ;;
             -h | --help)
-                print-usage >&2
-                exit 1
+                print-usage
+                exit 0
                 ;;
             *)
+                if [[ -n "${TARGET_KERNEL}" ]]; then
+                    echo "Only one target kernel can be specified!" >&2
+                    exit 1
+                fi
                 TARGET_KERNEL="$1"
                 shift
                 ;;
@@ -35,13 +44,14 @@ function parse-cli-args() {
 
 function print-usage() {
     cat <<EOF
-Usage: $0 [TARGET_KERNEL]
+Usage: $0 [-v|--verbose|TARGET_KERNEL]..
 
 Deploy the rtl88x2bu driver to the system. If TARGET_KERNEL is not specified,
 the driver will be deployed to all available kernels.
 
 Options:
   -h, --help        Show this help message and exit
+  -v, --verbose     Enable verbose output
   TARGET_KERNEL     Specify the target kernel version to deploy the driver to.
                     If not specified, the script will deploy to all available
                     kernels.
@@ -61,10 +71,10 @@ function ensure_root_permissions() {
 function remove_driver() {
     sudo dkms remove rtl88x2bu/5.8.7.1 --all &>/dev/null || true
 }
-
 function put_sources_in_place() {
     local VERSION="$1"
-    sudo rsync --delete --exclude=.git -rvhP ./ "/usr/src/rtl88x2bu-${VERSION}"
+    sudo rsync --delete --exclude=.git -rvhP ./ "/usr/src/rtl88x2bu-${VERSION}" >/dev/null
+    log "Sources copied to /usr/src/rtl88x2bu-${VERSION}"
 }
 
 function deploy_driver() {
@@ -86,6 +96,12 @@ function list-kernels() {
             cut -d- -f2
     else
         echo "${TARGET_KERNEL}"
+    fi
+}
+
+function log() {
+    if [[ "$VERBOSE" = "true" ]]; then
+        echo "$1"
     fi
 }
 
