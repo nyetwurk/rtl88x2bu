@@ -10,7 +10,6 @@ function main() {
     VERSION="$(get_version)"
     parse-cli-args "$@"
     ensure_root_permissions
-    remove_driver
     put_sources_in_place "$VERSION"
     deploy_driver "$VERSION"
 }
@@ -68,9 +67,6 @@ function ensure_root_permissions() {
     fi
 }
 
-function remove_driver() {
-    sudo dkms remove rtl88x2bu/5.8.7.1 --all &>/dev/null || true
-}
 function put_sources_in_place() {
     local VERSION="$1"
     sudo rsync --delete --exclude=.git -rvhP ./ "/usr/src/rtl88x2bu-${VERSION}" >/dev/null
