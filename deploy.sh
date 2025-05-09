@@ -83,7 +83,6 @@ function deploy_driver() {
     sudo dkms "add" -m rtl88x2bu -v "${VERSION}" || true
     list-kernels |
         while read -r kernel; do
-            # xargs -n1 sudo dkms install -m rtl88x2bu -v 5.8.7.1 -k
             for action in build install; do
                 sudo dkms "${action}" -m rtl88x2bu -v "${VERSION}" -k "${kernel}"
             done
