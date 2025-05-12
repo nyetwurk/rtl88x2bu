@@ -42,9 +42,17 @@ important work by saving and such beforehand.
 ### DKMS installation
 
 If you want to have the driver available at startup, it will be convenient to
-register it in DKMS. An executable explanation of how to do so can be found in
-the script `deploy.sh`. Since registering a kernel module in DKMS is a major
-intervention, only execute it if you understand what the script does.
+register it in DKMS. This can be done using the script `deploy.sh`, for either
+
+  * all kernels,
+  * a specific kernel, or
+  * the currently active kernel.
+  
+Please consult `--help` for more information and consider reading the script
+before executing it.
+
+Since registering a kernel module in DKMS is a major intervention, only execute
+it if you understand what the script does.
 
 ### Unknown Symbol Errors
 
