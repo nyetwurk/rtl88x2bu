@@ -95,7 +95,7 @@ function list-kernels() {
         echo "${TARGET_KERNEL}"
     else
         find /boot -maxdepth 1 -iname "initrd.img*" |
-            cut -d- -f2
+            cut -d- -f2-
         echo "${TARGET_KERNEL}"
     fi
 }
