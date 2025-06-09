@@ -28,6 +28,11 @@ Build confirmed on:
 * Linux version `6.10.3` to `6.12.10` on Debian Trixie
 * Linux version `6.13.0` (self-compiled) on Debian Trixie
 
+As of lately the maintainer experienced issues with the driver on Debian
+Testing, covering several Linux Kernel versions. More details can be found in
+[issue 280](https://github.com/cilynx/rtl88x2bu/issues/280). Any suggestions on
+how to troubleshoot or fix this are welcome there too.
+
 ## Using and Installing the Driver
 
 ### Simple Usage
@@ -47,7 +52,7 @@ register it in DKMS. This can be done using the script `deploy.sh`, for either
   * all kernels,
   * a specific kernel, or
   * the currently active kernel.
-  
+
 Please consult `--help` for more information and consider reading the script
 before executing it.
 
