@@ -1,6 +1,17 @@
 # Pending Deprecation
 
-A few versions ago (around 6.4 IIRC), rtw88x2bu support has been added to the mainline Linux kernel.  This repo will be maintained until we either receive a few comments on https://github.com/cilynx/rtl88x2bu/issues/270 that the mainline driver is working well or [MaxG87](https://github.com/MaxG87) and [cilynx](https://github.com/cilynx) agree that no feedback means no one is still using this driver and we make the executive decision to archive it.
+A few versions ago (around 6.4 IIRC), rtw88x2bu support has been added to the
+mainline Linux kernel.  This repo will be maintained until we either receive a
+few comments on https://github.com/cilynx/rtl88x2bu/issues/270 that the
+mainline driver is working well or [MaxG87](https://github.com/MaxG87) and
+[cilynx](https://github.com/cilynx) agree that no feedback means no one is
+still using this driver and we make the executive decision to archive it.
+
+**NOTE:** As of Linux v6.16, the maintainer is no longer using the driver
+themself. Due to ongoing stability issues with either the Wifi dongle or the
+driver of this repository the maintainer switched to a new Wifi dongle that is
+supported by the mainline kernel. Therefore, the maintainer will not be able to
+detect subtle issues themself anymore.
 
 # Driver for rtl88x2bu wifi adaptors
 
